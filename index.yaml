@@ -1,3 +1,24 @@
 apiVersion: v1
-entries: {}
-generated: "2024-02-11T19:04:32.698919-03:00"
+entries:
+  portier-broker:
+  - apiVersion: v2
+    appVersion: 0.8.5
+    created: "2024-02-11T22:10:21.858403603Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.8.2
+    description: Helm chart for portier-broker
+    digest: 7c199d429d055b8c702377152a1170328d97aa7f31ffc1d37d19268a6c52b40d
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: portier-broker
+    sources:
+    - https://github.com/mpwsh/k3s-arm/portier/chart
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.2/portier-broker-0.1.2.tgz
+    version: 0.1.2
+generated: "2024-02-11T22:10:21.858414654Z"
