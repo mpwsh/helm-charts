@@ -1,0 +1,13 @@
+# See https://github.com/helm/chart-testing#configuration
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+chart-repos:
+  - mpwsh=https://mpwsh.github.io/helm-charts
+  - bitnami=https://charts.bitnami.com/bitnami
+helm-extra-args: --timeout 600s
+validate-maintainers: false
+excluded-charts:
+additional-commands:
+  # - helm unittest --helm3 --strict --file unittests/*.yaml --file 'unittests/**/*.yaml' {{ .Path }}

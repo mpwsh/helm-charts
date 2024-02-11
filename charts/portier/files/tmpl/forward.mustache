@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Portier &ndash; Forwarding...</title>
+    <script src="/static/forward.js" defer></script>
+  </head>
+  <body>
+    <form id="form" action="{{ redirect_uri }}" method="post">
+      {{# params }}
+        <input type="hidden" name="{{ name }}" value="{{ value }}">
+      {{/ params }}
+    </form>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "portier-broker.fullname" . }}
+  labels:
+    {{- include "portier-broker.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "portier-broker.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "portier-broker.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "portier-broker.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          args: ["/home/portier-broker/config.toml"]
+          ports:
+          - name: broker
+            containerPort: {{ .Values.servicePort }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: BROKER_POSTMARK_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "{{ include "portier-broker.fullname" . }}-postmark-token"
+                key: token
+                optional: false
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: config
+            mountPath: /home/portier-broker/config.toml
+            subPath: config.toml
+          - name: templates
+            mountPath: /home/portier-broker/tmpl
+          - name: static
+            mountPath: /home/portier-broker/res/static
+          - name: lang
+            mountPath: /home/portier-broker/lang
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "portier-broker.fullname" . }}-config
+        - name: templates
+          configMap:
+            name: {{ include "portier-broker.fullname" . }}-templates
+        - name: static
+          configMap:
+            name: {{ include "portier-broker.fullname" . }}-static
+        - name: lang
+          configMap:
+            name: {{ include "portier-broker.fullname" . }}-lang
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

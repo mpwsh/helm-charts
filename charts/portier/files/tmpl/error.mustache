@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portier &ndash; Error</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <p class="head">{{ intro }}</p>
+
+      {{# error }}
+        <p>{{ reason }}: {{ error }}</p>
+      {{/ error }}
+
+      <p>{{ explanation }}</p>
+
+      {{# ref }}
+        <p><code>[REF:{{ ref }}]</code></p>
+      {{/ ref }}
+    </div>
+  </body>
+</html>

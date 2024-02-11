@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "portier-broker.fullname" . }}-templates
+  labels:
+    {{- include "portier-broker.labels" $ | nindent 4 }}
+data:
+  {{- (.Files.Glob "files/tmpl/**.mustache").AsConfig | nindent 2 }}
