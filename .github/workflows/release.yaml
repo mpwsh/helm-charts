@@ -32,7 +32,7 @@ jobs:
 
       - name: Add dependency chart repos
         run: |
-          helm repo add mpwsh https://mpwsh.github.io/helm-charts
+          helm repo add mpwsh https://charts.mpw.sh
           helm repo add bitnami https://charts.bitnami.com/bitnami
 
       - name: Run chart-releaser
