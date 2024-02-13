@@ -96,5 +96,5 @@ redis:
     enabled: false
   master:
     persistence:
-      #storageClass: "civo-volume"
+      # storageClass: ""
       size: 1Gi
