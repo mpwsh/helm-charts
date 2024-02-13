@@ -67,7 +67,7 @@ affinity: {}
 secrets:
   enabled: true
   entries:
-    postmarkToken: ""
+    postmarkToken: "your-token"
 
 servicePort: 3333
 
