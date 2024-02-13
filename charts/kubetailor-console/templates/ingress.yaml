@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "kubetailor-console.fullname" $ }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ .Values.config.domain }}
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: {{ include "kubetailor-console.fullname" . }}
+                port:
+                  number: {{ .Values.config.port }}
+            path: /
+  tls:
+    - hosts:
+      - {{ .Values.config.domain }}
+      secretName: {{ include "kubetailor-console.fullname" $ }}-tls

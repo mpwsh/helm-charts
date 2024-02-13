@@ -1,0 +1,11 @@
+{{- with .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubetailor-server.fullname" $ }}-config
+  labels:
+    {{- include "kubetailor-server.labels" $ | nindent 4 }}
+data:
+  conf.yaml: |
+    {{- toYaml . | nindent 4 }}
+{{- end }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "kubetailor-server.labels" . | nindent 4 }}
+  name: {{ include "kubetailor-server.fullname" . }}
+spec:
+  ports:
+  - name: server
+    port: {{ .Values.config.server.port }}
+    protocol: TCP
+    targetPort: {{ .Values.config.server.port }}
+  selector:
+    {{- include "kubetailor-server.selectorLabels" . | nindent 8 }}
+  type: ClusterIP

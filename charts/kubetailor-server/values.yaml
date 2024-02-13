@@ -1,0 +1,138 @@
+# Default values for kubetailor-server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: kubetailor/server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: kubetailor
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+environment:
+  configPath: /app/config/conf.yaml
+
+config:
+  server:
+    logLevel: debug
+    addr: 0.0.0.0
+    port: 8080
+  quickwit:
+    apiVersion: v1
+    url: "http://quickwit-searcher.quickwit.svc:7280"
+    index: otel-logs-v0_6
+  kubetailor:
+    namespace: kubetailor
+    gitSync:
+      image: registry.k8s.io/git-sync/git-sync:v3.6.6
+      period: 30s
+    deployment:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      # Limit connectivity to:
+      # - internet
+      # - pods owned by the same (owner) deployer
+      # - pods on the same Group
+      deployNetworkPolicies: true
+      # Service account for tapps
+      serviceAccount: limited
+      # if false, services in the same namespace won't be listed in env vars.
+      enableServiceLinks: false
+      allowPrivilegeEscalation: false
+      allowRoot: true
+      architectures: ["amd64", "arm64"]
+      allowedImages:
+        - nginx
+        - postgres
+        - mkodockx/docker-pastebin
+        - node
+        - nicolaka/netshoot
+        - tsl0922/ttyd:latest
+      resources:
+        cpu:
+          min: 0.2
+          max: 1
+        memory:
+          min: 128Mib
+          max: 2Gi
+        volume:
+          count:
+            min: 0
+            max: 2
+          size:
+            min: 100Mib
+            max: 10Gi
+      replicas:
+        min: 1
+        max: 3
+    ingress:
+      baseDomain: kubetailor.io
+      loadBalancerEndpoint: lb.kubetailor.io
+      className: nginx
+      matchLabels:
+        app.kubernetes.io/name: ingress-nginx
+      # Add these annotations to all created ingresses
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/affinity: cookie
+        nginx.ingress.kubernetes.io/enable-cors: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: "8096"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+        nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+        nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+        nginx.ingress.kubernetes.io/session-cookie-name: route
