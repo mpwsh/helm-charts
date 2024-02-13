@@ -88,8 +88,10 @@ config:
       # - pods owned by the same (owner) deployer
       # - pods on the same Group
       deployNetworkPolicies: true
-      serviceAccount: limited # Service account for tapps
-      enableServiceLinks: false #if false, services in the same namespace won't be listed in env vars.
+      # Service account for tapps
+      serviceAccount: limited
+      #if false, services in the same namespace won't be listed in env vars.
+      enableServiceLinks: false
       allowPrivilegeEscalation: false
       allowRoot: true
       architectures: ["amd64", "arm64"]
