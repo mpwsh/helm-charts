@@ -67,7 +67,7 @@ affinity: {}
 secrets:
   enabled: true
   entries:
-    postmarkToken: ""
+    postmarkToken: "your-token"
 
 servicePort: 3333
 
@@ -97,5 +97,5 @@ redis:
     enabled: false
   master:
     persistence:
-      #storageClass: "civo-volume"
+      # storageClass: ""
       size: 1Gi
