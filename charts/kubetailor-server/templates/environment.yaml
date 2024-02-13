@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubetailor-server.fullname" . }}
+data:
+  {{- with .Values.environment }}
+  CONFIG_PATH: {{ .configPath }}
+  {{- end }}

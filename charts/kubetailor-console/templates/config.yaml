@@ -1,0 +1,23 @@
+{{- with .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubetailor-console.fullname" $ }}-config
+  labels:
+    {{- include "kubetailor-console.labels" $ | nindent 4 }}
+data:
+  production.yaml: |
+    application:
+      host: "{{ required "must set host .config.host" .host }}"
+      base_url: "https://{{ required "must set host .config.base_url" .domain }}"
+      hmac_secret: "{{ required "must set host .config.host" .hmacSecret }}"
+  base.yaml: |
+    application:
+      session_ttl: "{{ required "must set host .config.session_ttl" .sessionTtl }}"
+      port: "{{ required "must set port .config.port" .port }}"
+      hmac_secret: "super-long-and-secret-random-key-needed-to-verify-message-integrity"
+    redis_dsn: "{{ required "must set host .config.redisDsn" .redisUrl }}"
+    portier_url: "{{ required "must set host .config.portierUrl" .portierUrl }}"
+    kubetailor_url: "{{ required "must set host .config.kubetailorApiUrl" .kubetailorApiUrl }}"
+
+{{- end }}
