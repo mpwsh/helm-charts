@@ -90,7 +90,7 @@ config:
       deployNetworkPolicies: true
       # Service account for tapps
       serviceAccount: limited
-      #if false, services in the same namespace won't be listed in env vars.
+      # if false, services in the same namespace won't be listed in env vars.
       enableServiceLinks: false
       allowPrivilegeEscalation: false
       allowRoot: true

@@ -67,7 +67,7 @@ affinity: {}
 secrets:
   enabled: false
   entries:
-    #TODO: move hmacSecret to env variable
+    # TODO: move hmacSecret to env variable
     hmacSecret: ""
 
 ingress:
