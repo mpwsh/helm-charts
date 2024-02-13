@@ -12,6 +12,59 @@ entries:
     urls:
     - https://github.com/mpwsh/helm-charts/releases/download/garage-0.4.1/garage-0.4.1.tgz
     version: 0.4.1
+  kubetailor-console:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-02-13T01:54:44.318160875Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.8.2
+    description: Helm chart for kubetailor-console
+    digest: 282e9ebebbdcd61e73e8125ada5fc0e553978c396a821ff959b70b30310512ce
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-console
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-console
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-console-0.1.0/kubetailor-console-0.1.0.tgz
+    version: 0.1.0
+  kubetailor-operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-02-13T01:54:44.451051978Z"
+    description: Helm chart for kubetailor-operator
+    digest: dba6b37f9877381d26aa8cfacf4ea1c62c3b1ace5a89ca4af5a7e6fa10c386f5
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-operator
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-operator
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-operator-0.1.0/kubetailor-operator-0.1.0.tgz
+    version: 0.1.0
+  kubetailor-server:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-02-13T01:54:44.56683914Z"
+    description: Helm chart for kubetailor-server
+    digest: f7ac5a72d68999ba7f4e586c05bb32ed9590bd9c97ba96f922f9486d3a46799a
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-server
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-server
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-server-0.1.0/kubetailor-server-0.1.0.tgz
+    version: 0.1.0
   portier-broker:
   - apiVersion: v2
     appVersion: 0.8.5
@@ -33,4 +86,4 @@ entries:
     urls:
     - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.2/portier-broker-0.1.2.tgz
     version: 0.1.2
-generated: "2024-02-11T22:13:36.874238192Z"
+generated: "2024-02-13T01:54:44.566856683Z"
