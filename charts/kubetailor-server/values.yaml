@@ -88,8 +88,10 @@ config:
       # - pods owned by the same (owner) deployer
       # - pods on the same Group
       deployNetworkPolicies: true
-      serviceAccount: limited # Service account for tapps
-      enableServiceLinks: false #if false, services in the same namespace won't be listed in env vars.
+      # Service account for tapps
+      serviceAccount: limited
+      # if false, services in the same namespace won't be listed in env vars.
+      enableServiceLinks: false
       allowPrivilegeEscalation: false
       allowRoot: true
       architectures: ["amd64", "arm64"]
@@ -134,3 +136,4 @@ config:
         nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
         nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
         nginx.ingress.kubernetes.io/session-cookie-name: route
+>>>>>>> e523aecaf83e520ff968f3536e8d3a2a786f0e02

@@ -67,7 +67,8 @@ affinity: {}
 secrets:
   enabled: false
   entries:
-    hmacSecret: "" #TODO: move hmacSecret to env variable
+    # TODO: move hmacSecret to env variable
+    hmacSecret: ""
 
 ingress:
   className: nginx
@@ -81,7 +82,8 @@ config:
   host: 0.0.0.0
   port: 8000
   hmacSecret: "super-long-and-secret-random-key-needed-to-verify-message-integrity"
-  sessionTtl: 48 # in hours
+  # TTL in hours
+  sessionTtl: 48
   kubetailorApiUrl: http://kubetailor-server.kubetailor.svc:8080
   portierUrl: https://broker.portier.io
   redisUrl: redis://redis-master.kubetailor.svc/0
@@ -94,5 +96,5 @@ redis:
     enabled: false
   master:
     persistence:
-      #storageClass: "civo-volume"
+      # storageClass: ""
       size: 1Gi
