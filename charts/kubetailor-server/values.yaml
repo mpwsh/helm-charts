@@ -136,4 +136,3 @@ config:
         nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
         nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
         nginx.ingress.kubernetes.io/session-cookie-name: route
->>>>>>> e523aecaf83e520ff968f3536e8d3a2a786f0e02
