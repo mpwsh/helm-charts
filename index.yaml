@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   garage:
   - apiVersion: v2
+    appVersion: v1.0.1
+    created: "2024-11-18T15:13:04.86467759Z"
+    description: S3-compatible object store for small self-hosted geo-distributed
+      deployments
+    digest: e90e0a2eab27c26e5fb74defe8e6f36562e20925e7ba0a451994ecf03efa7897
+    name: garage
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/garage-0.5.1/garage-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
     appVersion: v0.9.1
     created: "2024-02-11T22:13:36.874228654Z"
     description: S3-compatible object store for small self-hosted geo-distributed
@@ -106,4 +117,4 @@ entries:
     urls:
     - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.2/portier-broker-0.1.2.tgz
     version: 0.1.2
-generated: "2024-02-13T02:00:35.353111911Z"
+generated: "2024-11-18T15:13:04.864692959Z"
