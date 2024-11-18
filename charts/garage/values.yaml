@@ -169,11 +169,13 @@ ingress:
         # kubernetes.io/tls-acme: "true"
       labels: {}
       hosts:
-        - host: "s3.garage.tld" # garage S3 API endpoint
+        # garage S3 API endpoint
+        - host: "s3.garage.tld"
           paths:
             - path: /
               pathType: Prefix
-        - host: "*.s3.garage.tld" # garage S3 API endpoint, DNS style bucket access
+        # garage S3 API endpoint, DNS style bucket access
+        - host: "*.s3.garage.tld"
           paths:
             - path: /
               pathType: Prefix
@@ -193,14 +195,16 @@ ingress:
         # kubernetes.io/tls-acme: "true"
       labels: {}
       hosts:
-        - host: "*.web.garage.tld" # wildcard website access with bucket name prefix
+        # wildcard website access with bucket name prefix
+        - host: "*.web.garage.tld"
           paths:
             - path: /
               pathType: Prefix
-        - host: "mywebpage.example.com" # specific bucket access with FQDN bucket
-          paths:
-            - path: /
-              pathType: Prefix
+        # specific bucket access with FQDN bucket
+        # - host: "mywebpage.example.com"
+        #  paths:
+        #    - path: /
+        #      pathType: Prefix
       tls: []
       #  - secretName: my-garage-cluster-tls
       #    hosts:
