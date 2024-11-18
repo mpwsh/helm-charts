@@ -11,6 +11,7 @@ spec:
   {{- if eq .Values.deployment.kind "StatefulSet" }}
   replicas: {{ .Values.deployment.replicaCount }}
   serviceName: {{ include "garage.fullname" . }}
+  podManagementPolicy: {{ .Values.deployment.podManagementPolicy }}
   {{- end }}
   template:
     metadata:
@@ -63,6 +64,10 @@ spec:
               name: web-api
             - containerPort: 3903
               name: admin
+          {{- with .Values.environment }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: meta
               mountPath: /mnt/meta
