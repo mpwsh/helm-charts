@@ -6,17 +6,13 @@
 garage:
   # Can be changed for better performance on certain systems
   # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#db-engine-since-v0-8-0
-  dbEngine: "sled"
+  dbEngine: "lmdb"
 
+  lmdbMapSize: 1Gi
   # Defaults is 1MB
   # An increase can result in better performance in certain scenarios
   # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#block-size
   blockSize: "1048576"
-
-  # Tuning parameters for the sled DB engine
-  # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#sled-cache-capacity
-  sledCacheCapacity: "134217728"
-  sledFlushEveryMs: "2000"
 
   # Default to 3 replicas, see the replication_mode section at
   # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication-mode
@@ -50,14 +46,11 @@ garage:
 
     block_size = {{ .Values.garage.blockSize }}
 
-    {{- if eq .Values.garage.dbEngine "sled"}}
-    sled_cache_capacity = {{ .Values.garage.sledCacheCapacity }}
-    sled_flush_every_ms = {{ .Values.garage.sledFlushEveryMs }}
-    {{- end }}
-
     replication_mode = "{{ .Values.garage.replicationMode }}"
 
     compression_level = {{ .Values.garage.compressionLevel }}
+
+    lmdb_map_size = {{ .Values.garage.lmdbMapSize }}
 
     rpc_bind_addr = "{{ .Values.garage.rpcBindAddr }}"
     # rpc_secret will be populated by the init container from a k8s secret object
@@ -106,6 +99,8 @@ deployment:
   kind: StatefulSet
   # Number of StatefulSet replicas/garage nodes to start
   replicaCount: 3
+  # If using statefulset, allow Parallel or OrderedReady (default)
+  podManagementPolicy: OrderedReady
 
 image:
   repository: dxflrs/amd64_garage
@@ -168,7 +163,8 @@ ingress:
       # replace "nginx" by an Ingress controller
       # you can find examples here https://kubernetes.io/docs/concepts/services-networking/ingress-controllers
       # className: "nginx"
-      annotations: {}
+      annotations:
+        {}
         # kubernetes.io/ingress.class: "nginx"
         # kubernetes.io/tls-acme: "true"
       labels: {}
@@ -191,25 +187,27 @@ ingress:
       # replace "nginx" by an Ingress controller
       # you can find examples here https://kubernetes.io/docs/concepts/services-networking/ingress-controllers
       # className: "nginx"
-      annotations: {}
+      annotations:
+        {}
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       labels: {}
       hosts:
-       - host: "*.web.garage.tld" # wildcard website access with bucket name prefix
-         paths:
-           - path: /
-             pathType: Prefix
-       - host: "mywebpage.example.com" # specific bucket access with FQDN bucket
-         paths:
-           - path: /
-             pathType: Prefix
+        - host: "*.web.garage.tld" # wildcard website access with bucket name prefix
+          paths:
+            - path: /
+              pathType: Prefix
+        - host: "mywebpage.example.com" # specific bucket access with FQDN bucket
+          paths:
+            - path: /
+              pathType: Prefix
       tls: []
       #  - secretName: my-garage-cluster-tls
       #    hosts:
       #      - kubernetes.docker.internal
 
-resources: {}
+resources:
+  {}
   # The following are indicative for a small-size deployement, for anything serious double them.
   # limits:
   #   cpu: 100m
@@ -223,6 +221,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+environment: {}
 
 monitoring:
   metrics:
