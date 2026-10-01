@@ -14,8 +14,16 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# RBAC. Set both `create` flags to false when the ClusterRole, the `kubetailor` ServiceAccount and
+# the `limited` ServiceAccount are applied from the kubetailor repository's deploy/ folder (as the
+# flint overlay does); Helm cannot adopt resources it did not create.
+clusterRole:
+  create: true
+
 serviceAccount:
   create: true
+  # The ServiceAccount TailoredApp pods run as (config.kubetailor.deployment.serviceAccount).
+  createLimited: true
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -120,19 +128,16 @@ config:
         min: 1
         max: 3
     ingress:
+      # TailoredApps get `<shared>.<baseDomain>`.
       baseDomain: kubetailor.io
+      # DNS target for apps that are not pinned to a region (external-dns `target`). Apps with
+      # `region` or node-exposed ports get their node's public IP from the operator instead.
       loadBalancerEndpoint: lb.kubetailor.io
-      className: nginx
+      # Ingress controller: class name plus the pod labels kubetailor's NetworkPolicy admits.
+      className: traefik
       matchLabels:
-        app.kubernetes.io/name: ingress-nginx
-      # Add these annotations to all created ingresses
+        app.kubernetes.io/name: traefik
+      # Added to every created Ingress. Controller-specific annotations go here
+      # (e.g. nginx.ingress.kubernetes.io/* when className is nginx).
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        nginx.ingress.kubernetes.io/affinity: cookie
-        nginx.ingress.kubernetes.io/enable-cors: "true"
-        nginx.ingress.kubernetes.io/proxy-body-size: "8096"
-        nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-        nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-        nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-        nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-        nginx.ingress.kubernetes.io/session-cookie-name: route

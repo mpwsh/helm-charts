@@ -69,7 +69,9 @@ secrets:
   entries:
     postmarkToken: "your-token"
 
-servicePort: 3333
+service:
+  port: 3333
+  annotations: {}
 
 ingress:
   className: nginx

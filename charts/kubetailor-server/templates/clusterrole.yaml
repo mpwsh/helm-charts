@@ -1,3 +1,9 @@
+{{- /*
+  The ClusterRole is shared with the operator (same name, same ServiceAccount), so its rules are
+  the union both need. Keep in step with deploy/clusterrole.yaml in the kubetailor repository,
+  or set clusterRole.create=false and apply that file instead.
+*/ -}}
+{{- if .Values.clusterRole.create }}
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -7,6 +13,7 @@ rules:
   - kubetailor.io
   resources:
   - tailoredapps
+  - tailoredapps/status
   verbs:
   - create
   - get
@@ -16,6 +23,16 @@ rules:
   - delete
   - update
   - deletecollection
+# Placement: which node runs an app's pods and what that node's public IP is.
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
 - apiGroups:
   - networking.k8s.io
   resources:
@@ -26,7 +43,6 @@ rules:
   - create
   - watch
   - list
-  - create
   - update
   - patch
   - delete
@@ -73,4 +89,5 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ include "kubetailor-server.serviceAccountName" . }}
-  namespace: {{ include "kubetailor-server.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+{{- end }}
