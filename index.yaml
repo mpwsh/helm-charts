@@ -3,6 +3,17 @@ entries:
   garage:
   - apiVersion: v2
     appVersion: v1.0.1
+    created: "2026-10-01T06:20:55.808793732Z"
+    description: S3-compatible object store for small self-hosted geo-distributed
+      deployments
+    digest: 7d1ce3ac8c02cbdb83e74c2081a57c7e9e979093716b83ac977a3b3432786ef9
+    name: garage
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/garage-0.5.2/garage-0.5.2.tgz
+    version: 0.5.2
+  - apiVersion: v2
+    appVersion: v1.0.1
     created: "2024-11-18T15:13:04.86467759Z"
     description: S3-compatible object store for small self-hosted geo-distributed
       deployments
@@ -25,6 +36,21 @@ entries:
     version: 0.4.1
   kubetailor-console:
   - apiVersion: v2
+    appVersion: 0.1.3
+    created: "2026-10-01T06:20:55.98880216Z"
+    description: Helm chart for kubetailor-console
+    digest: 85c16cab3af7ec2372f7867f5c9059a25a3e7b80511e26e0136842df93a6458b
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-console
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-console
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-console-0.2.0/kubetailor-console-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2024-02-13T01:54:44.318160875Z"
     dependencies:
@@ -46,6 +72,21 @@ entries:
     version: 0.1.0
   kubetailor-operator:
   - apiVersion: v2
+    appVersion: 0.1.3
+    created: "2026-10-01T06:20:56.200182396Z"
+    description: Helm chart for kubetailor-operator
+    digest: 0272ea76939f873f46f487c3496daee1d29ab9645bf290c1f86cdfbf882c3e9b
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-operator
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-operator
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-operator-0.1.1/kubetailor-operator-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2024-02-13T01:54:44.451051978Z"
     description: Helm chart for kubetailor-operator
@@ -62,6 +103,21 @@ entries:
     version: 0.1.0
   kubetailor-server:
   - apiVersion: v2
+    appVersion: 0.1.3
+    created: "2026-10-01T06:20:56.450533915Z"
+    description: Helm chart for kubetailor-server
+    digest: 351615ab120c04784eea6d98f1bf73e8edb59aabcdd3b17062617ff0501ba382
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-server
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-server
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-server-0.2.0/kubetailor-server-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2024-02-13T01:54:44.56683914Z"
     description: Helm chart for kubetailor-server
@@ -77,6 +133,26 @@ entries:
     - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-server-0.1.0/kubetailor-server-0.1.0.tgz
     version: 0.1.0
   portier-broker:
+  - apiVersion: v2
+    appVersion: 0.8.5
+    created: "2026-10-01T06:20:56.71208282Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.8.2
+    description: Helm chart for portier-broker
+    digest: a7cc730ebf1c30dffecd7aff85f09ad02e895308f66e7fe5b6508a499a95b557
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: portier-broker
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/portier
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.4/portier-broker-0.1.4.tgz
+    version: 0.1.4
   - apiVersion: v2
     appVersion: 0.8.5
     created: "2024-02-13T02:00:35.353097814Z"
@@ -117,4 +193,4 @@ entries:
     urls:
     - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.2/portier-broker-0.1.2.tgz
     version: 0.1.2
-generated: "2024-11-18T15:13:04.864692959Z"
+generated: "2026-10-01T06:20:56.712117409Z"
