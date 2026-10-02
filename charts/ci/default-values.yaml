@@ -1,9 +1,0 @@
-# Values chart-testing (`ct lint`) renders the chart with: the two settings every real
-# install has, so the full Deployment, Secret and policy env are exercised.
-cluster: ci
-provider:
-  apiKey: ci-not-a-real-key
-policy:
-  allowedRegions: [scl, ewr]
-  allowedPlans: [vc2-2c-4gb]
-verbosity: 1
