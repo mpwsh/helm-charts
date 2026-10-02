@@ -1,7 +1,9 @@
-{{- $cluster := required "cluster is required: the name you gave `flint cluster create`" .Values.cluster -}}
-{{- if and (not .Values.provider.existingSecret) (not .Values.provider.apiKey) -}}
-{{- fail "set provider.apiKey or provider.existingSecret" -}}
-{{- end -}}
+{{- /*
+  `cluster` and a provider key are required for the controller to run, but the chart still
+  renders without them (chart-testing templates every chart with its default values): the
+  env vars are left out and the binary refuses to start with a clear message. NOTES.txt says
+  what is missing.
+*/ -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,17 +51,21 @@ spec:
             - -v
             {{- end }}
           env:
+            {{- with .Values.cluster }}
             - name: FLINT_CLUSTER
-              value: {{ $cluster | quote }}
+              value: {{ . | quote }}
+            {{- end }}
             - name: FLINT_NAMESPACE
               value: {{ include "flint-controller.stateNamespace" . | quote }}
             - name: FLINT_PROVIDER
               value: {{ .Values.provider.name | quote }}
+            {{- if or .Values.provider.existingSecret .Values.provider.apiKey }}
             - name: {{ include "flint-controller.providerKeyEnv" . }}
               valueFrom:
                 secretKeyRef:
                   name: {{ include "flint-controller.providerSecretName" . }}
                   key: {{ .Values.provider.existingSecretKey | default (include "flint-controller.providerKeyEnv" .) }}
+            {{- end }}
             {{- with .Values.policy.allowedRegions }}
             - name: FLINT_ALLOWED_REGIONS
               value: {{ join "," . | quote }}

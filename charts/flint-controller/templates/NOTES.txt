@@ -1,4 +1,13 @@
-flint-controller is managing cluster "{{ .Values.cluster }}".
+{{- if not .Values.cluster }}
+WARNING: `cluster` is not set. The controller will not start until it is:
+  helm upgrade {{ .Release.Name }} mpwsh/flint-controller -n {{ .Release.Namespace }} --reuse-values --set cluster=<name>
+{{- end }}
+{{- if not (or .Values.provider.existingSecret .Values.provider.apiKey) }}
+WARNING: no provider key. Set provider.apiKey, or provider.existingSecret to a Secret in this
+namespace holding {{ include "flint-controller.providerKeyEnv" . }}.
+{{- end }}
+
+flint-controller is managing cluster "{{ .Values.cluster | default "<unset>" }}".
 
 It reads the cluster state from the Secret
   {{ include "flint-controller.stateNamespace" . }}/flint-cluster-{{ .Values.cluster }}
