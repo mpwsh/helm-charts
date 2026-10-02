@@ -1,5 +1,31 @@
 apiVersion: v1
 entries:
+  flint-controller:
+  - apiVersion: v2
+    appVersion: 0.1.7
+    created: "2026-10-02T04:48:59.981791982Z"
+    description: In-cluster controller for flint. A NodeClaim becomes a node in the
+      region it names; a FirewallRule opens a port on the provider firewall. Apps
+      ask for infrastructure with Kubernetes objects; only this controller holds the
+      provider key.
+    digest: 0d869fc812923f0b35997b638636a6abdb6a04a500ab6b4bee7911a0fd2950d8
+    keywords:
+    - flint
+    - k3s
+    - vultr
+    - nodes
+    - firewall
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: flint-controller
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/flint-controller
+    - https://github.com/mpwsh/flint
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/flint-controller-0.1.0/flint-controller-0.1.0.tgz
+    version: 0.1.0
   garage:
   - apiVersion: v2
     appVersion: v1.0.1
@@ -193,4 +219,4 @@ entries:
     urls:
     - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.2/portier-broker-0.1.2.tgz
     version: 0.1.2
-generated: "2026-10-01T06:20:56.712117409Z"
+generated: "2026-10-02T04:48:59.981803749Z"
