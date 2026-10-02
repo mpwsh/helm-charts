@@ -1,0 +1,105 @@
+{{- $cluster := required "cluster is required: the name you gave `flint cluster create`" .Values.cluster -}}
+{{- if and (not .Values.provider.existingSecret) (not .Values.provider.apiKey) -}}
+{{- fail "set provider.apiKey or provider.existingSecret" -}}
+{{- end -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "flint-controller.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "flint-controller.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  # Never two at once: the old pod stops before the new one touches the provider.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "flint-controller.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "flint-controller.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "flint-controller.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: controller
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - controller
+            {{- range until (int .Values.verbosity) }}
+            - -v
+            {{- end }}
+          env:
+            - name: FLINT_CLUSTER
+              value: {{ $cluster | quote }}
+            - name: FLINT_NAMESPACE
+              value: {{ include "flint-controller.stateNamespace" . | quote }}
+            - name: FLINT_PROVIDER
+              value: {{ .Values.provider.name | quote }}
+            - name: {{ include "flint-controller.providerKeyEnv" . }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "flint-controller.providerSecretName" . }}
+                  key: {{ .Values.provider.existingSecretKey | default (include "flint-controller.providerKeyEnv" .) }}
+            {{- with .Values.policy.allowedRegions }}
+            - name: FLINT_ALLOWED_REGIONS
+              value: {{ join "," . | quote }}
+            {{- end }}
+            {{- with .Values.policy.allowedPlans }}
+            - name: FLINT_ALLOWED_PLANS
+              value: {{ join "," . | quote }}
+            {{- end }}
+            {{- with .Values.policy.defaultPlan }}
+            - name: FLINT_DEFAULT_PLAN
+              value: {{ . | quote }}
+            {{- end }}
+            - name: FLINT_MAX_NODES
+              value: {{ .Values.policy.maxNodes | quote }}
+            - name: FLINT_MAX_NODES_PER_REGION
+              value: {{ .Values.policy.maxNodesPerRegion | quote }}
+            - name: FLINT_PORT_RANGE
+              value: {{ .Values.policy.portRange | quote }}
+            - name: FLINT_RESYNC_SECS
+              value: {{ .Values.policy.resyncSeconds | quote }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,34 @@
+flint-controller is managing cluster "{{ .Values.cluster }}".
+
+It reads the cluster state from the Secret
+  {{ include "flint-controller.stateNamespace" . }}/flint-cluster-{{ .Values.cluster }}
+which `flint cluster create` writes. For a cluster created before the controller existed,
+run once from the machine that created it:
+
+  flint cluster sync {{ .Values.cluster }}
+
+Then ask for infrastructure with objects:
+
+  kubectl apply -f - <<EOF
+  apiVersion: flint.mpw.sh/v1
+  kind: NodeClaim
+  metadata:
+    name: region-scl
+  spec:
+    region: scl
+  EOF
+  kubectl get nodeclaims -w
+
+  kubectl -n default apply -f - <<EOF
+  apiVersion: flint.mpw.sh/v1
+  kind: FirewallRule
+  metadata:
+    name: game-udp
+  spec:
+    protocol: udp
+    port: "27015"
+  EOF
+  kubectl get firewallrules -A
+
+Logs:
+  kubectl -n {{ .Release.Namespace }} logs deploy/{{ include "flint-controller.fullname" . }} -f

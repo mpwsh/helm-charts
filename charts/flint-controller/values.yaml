@@ -1,0 +1,103 @@
+# Default values for flint-controller.
+
+# One replica only: the controller serializes provider calls in-process and holds no leader
+# lock, so two copies would race on the firewall.
+replicaCount: 1
+
+image:
+  repository: mpwsh/flint
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Required. The cluster this controller manages: the name you gave `flint cluster create`.
+# Its state lives in the Secret flint-cluster-<cluster> (written by `cluster create`, or by
+# `flint cluster sync <cluster>` for clusters created before the controller existed).
+cluster: ""
+# Namespace of that Secret. The release namespace when empty.
+stateNamespace: ""
+
+provider:
+  name: vultr
+  # The provider API key, one of:
+  #   apiKey:         the chart creates a Secret holding it (ends up in the release values)
+  #   existingSecret: name of a Secret in the release namespace that already holds it
+  # Use a key made for the controller, restricted to the nodes' IPs in the Vultr console
+  # (Account > API > Access Control), so a leaked key is useless from anywhere else.
+  apiKey: ""
+  existingSecret: ""
+  # Key inside the Secret.
+  existingSecretKey: VULTR_API_KEY
+
+# What apps may ask for. A NodeClaim or FirewallRule outside these is marked Failed with the
+# reason and left alone.
+policy:
+  # Regions a NodeClaim may name. Empty: any region the provider offers.
+  allowedRegions: []
+  # Plans a NodeClaim may name, on top of the default plan.
+  allowedPlans: []
+  # Plan for claims that name none. Empty: the plan of the cluster's first server.
+  defaultPlan: ""
+  # Most nodes the cluster may have, servers included.
+  maxNodes: 5
+  # Most nodes one region may have, servers included.
+  maxNodesPerRegion: 1
+  # Ports a FirewallRule may open. 22, 2379-2380, 6443, 8472, 10250 and 51820 are never
+  # opened this way whatever the range says.
+  portRange: "1024-65535"
+  # Seconds between full re-syncs of the provider firewall when nothing changed.
+  resyncSeconds: 600
+
+crds:
+  # Install the NodeClaim and FirewallRule CRDs with the release. They are kept on uninstall
+  # (helm.sh/resource-policy: keep) so claims, and the nodes behind them, survive a reinstall.
+  install: true
+
+rbac:
+  # ClusterRole for nodes/pods and the two CRDs; Roles for the state Secret and for minting
+  # bootstrap tokens in kube-system.
+  create: true
+
+serviceAccount:
+  create: true
+  annotations: {}
+  # Generated from the release name when empty.
+  name: ""
+
+# 0 = info, 1 = debug, 2 = trace (also RUST_LOG via extraEnv).
+verbosity: 0
+extraEnv: []
+#  - name: RUST_LOG
+#    value: info,flint=debug
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10000
+  runAsGroup: 10000
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
