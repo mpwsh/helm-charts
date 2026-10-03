@@ -26,6 +26,15 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: kubetailor
 
+# Environment of the operator. With the flint controller in the cluster:
+#   KUBETAILOR_NODE_IDLE_MINUTES  minutes a node kubetailor asked for may run no app pods
+#                                 before it is given back (default 60)
+#   KUBETAILOR_DEFAULT_REGION     region to grow for apps that name none (default: the
+#                                 control plane's)
+#   KUBETAILOR_PUBLIC_IP_LABEL    node label holding the public IP (default flint.mpw.sh/public-ip)
+env: {}
+#  KUBETAILOR_NODE_IDLE_MINUTES: "60"
+
 podAnnotations: {}
 
 podSecurityContext:

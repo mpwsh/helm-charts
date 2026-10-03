@@ -8,6 +8,7 @@ rules:
   - kubetailor.io
   resources:
   - tailoredapps
+  - tailoredapps/status
   verbs:
   - create
   - get
@@ -16,6 +17,42 @@ rules:
   - patch
   - delete
   - update
+  - deletecollection
+# Placement: which node runs an app's pods and what that node's public IP is.
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+# Nodes and ports through the flint controller (flint.mpw.sh); unused, and harmless, on a
+# cluster without it.
+- apiGroups:
+  - flint.mpw.sh
+  resources:
+  - nodeclaims
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - patch
+  - delete
+- apiGroups:
+  - flint.mpw.sh
+  resources:
+  - firewallrules
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
   - deletecollection
 - apiGroups:
   - networking.k8s.io
