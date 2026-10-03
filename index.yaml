@@ -124,6 +124,21 @@ entries:
   kubetailor-operator:
   - apiVersion: v2
     appVersion: 0.1.3
+    created: "2026-10-03T20:39:53.599789052Z"
+    description: Helm chart for kubetailor-operator
+    digest: fd6768f0c7cca8d3fd0ce2ef6a41d9ff769399f8fc226809ab4c3b42f60e97ea
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-operator
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-operator
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-operator-0.1.2/kubetailor-operator-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.1.3
     created: "2026-10-01T06:20:56.200182396Z"
     description: Helm chart for kubetailor-operator
     digest: 0272ea76939f873f46f487c3496daee1d29ab9645bf290c1f86cdfbf882c3e9b
@@ -153,6 +168,21 @@ entries:
     - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-operator-0.1.0/kubetailor-operator-0.1.0.tgz
     version: 0.1.0
   kubetailor-server:
+  - apiVersion: v2
+    appVersion: 0.1.3
+    created: "2026-10-03T20:39:53.747706569Z"
+    description: Helm chart for kubetailor-server
+    digest: 99a43a4f7e0ffa150039f38c970ca952e3d38711aa6d9df9e03bdc69faa41a24
+    maintainers:
+    - email: x@mpw.sh
+      name: mpw
+    name: kubetailor-server
+    sources:
+    - https://github.com/mpwsh/helm-charts/tree/main/charts/kubetailor-server
+    type: application
+    urls:
+    - https://github.com/mpwsh/helm-charts/releases/download/kubetailor-server-0.2.1/kubetailor-server-0.2.1.tgz
+    version: 0.2.1
   - apiVersion: v2
     appVersion: 0.1.3
     created: "2026-10-01T06:20:56.450533915Z"
@@ -244,4 +274,4 @@ entries:
     urls:
     - https://github.com/mpwsh/helm-charts/releases/download/portier-broker-0.1.2/portier-broker-0.1.2.tgz
     version: 0.1.2
-generated: "2026-10-02T05:41:25.213490496Z"
+generated: "2026-10-03T20:39:53.747730455Z"
